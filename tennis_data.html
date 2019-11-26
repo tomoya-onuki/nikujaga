@@ -11,54 +11,7 @@
 </p>
 <script type="text/javascript">
 // var data = [];
-var data = [];
-var WinLose = [];
-var FirstSecond = [];
-var course = [];
-var speed = [];
-var side = [];
 
-//CSVファイルを読み込む
- 
-// 読み込んだCSVデータを二次元配列に変換する関数convertCSVtoArray()の定義
-function convertCSVtoArray(str){ // 読み込んだCSVデータが文字列として渡される
-    var result = []; // 最終的な二次元配列を入れるための配列
-    var tmp = str.split("\n"); // 改行を区切り文字として行を要素とした配列を生成
- 
-    // 各行ごとにカンマで区切った文字列を要素とした二次元配列を生成
-    for(var i=0;i<tmp.length;++i){
-        result[i] = tmp[i].split(',');
-    }
-
-    return result;
-    // alert(result[1][2]); // 300yen
-    // console.log(result[1][2]);
-}
-
-
-
-//CSVファイルを読み込む
-var req = new XMLHttpRequest(); // HTTPでファイルを読み込むためのXMLHttpRrequestオブジェクトを生成
-req.open("get", "20190102_Brisben.csv", true); // アクセスするファイルを指定
-req.send(); // HTTPリクエストの発行
-	
-// レスポンスが返ってきたらconvertCSVtoArray()を呼ぶ	
-req.onload = function(){
-    // ここに処理を描く
-    data = convertCSVtoArray(req.responseText); // 渡されるのは読み込んだCSVデータ
-    for(var i =0; i<data.length; i++){
-        WinLose[i] = data[i][7];
-        FirstSecond[i] = data[i][8]; 
-        course[i] = data[i][9]; 
-        speed[i] = data[i][10]; 
-        side[i] = data[i][14];
-    }
-    console.log(speed);
-    console.log(WinLose);
-    console.log(FirstSecond);
-    console.log(course);
-    console.log(side);
-}
 
 </script>
 </body>

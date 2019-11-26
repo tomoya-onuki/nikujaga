@@ -1,11 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ページタイトル</title>
+</head>
+<body>
+
 <div id="container"></div>
 <script type="text/javascript">
 var cvs = document.createElement("canvas");
-cvs.width = 500;
+cvs.width = 1200;
 cvs.height = 1200;
 document.getElementById("container").appendChild(cvs);
 var ctx = cvs.getContext("2d");
 
+// hsv から rgb　へ変換
 function hsv2rgb(h, s, v) {
     var r, g, b;
     s /= 255;
@@ -25,6 +34,7 @@ function hsv2rgb(h, s, v) {
     return [0|r, 0|g, 0|b];
  }
 
+// 円を書く関数
 function ellipse(x, y){
   ctx.lineWidth = 1;
   ctx.strokeStyle = "black";
@@ -34,9 +44,8 @@ function ellipse(x, y){
   ctx.fill();
 }
 
-var speed = 200;
 
-//スピード(120-210)に対応するｓ
+//スピード(120-210)を対応する彩度に変換する
 function color(speed){
   var s = (speed - 120) / 90 * 255;
   return s;
@@ -44,39 +53,42 @@ function color(speed){
 
 var rgb;
 
+// ボールの軌道を書く関数
 function line(x1, y1, x2, y2){
-  ctx.lineWidth = 3;
   var h = 180;
-  var s;
+  var s = 255;
   var v = 255;
   s = color(speed);
   rgb = hsv2rgb(h, s, v);
   ctx.strokeStyle = rgb;
+  ctx.strokeStyle = "#000000";
+  ctx.lineCap = "round";
   ctx.beginPath();
   ctx.moveTo(x1, y1);
   ctx.lineTo(x2, y2);
-  ctx.closePath();
+  // ctx.closePath();
   ctx.stroke();
 }
 
-ctx.strokeStyle = "#000000";
-ctx.lineWidth = 1;
 
-var x = 10, y = 10;
+// コートで使う変数
 var w = 300;
 var h = 600;
-
-ctx.translate(10, 10);
-ctx.strokeRect(0, 0, w*0.1, h*0.5);
-ctx.strokeRect(w*0.1, 0, w*0.8, h*0.25);
-ctx.strokeRect(w*0.9, 0, w*0.1, h*0.5);
-ctx.strokeRect(w*0.1, h*0.25, w*0.4, h*0.25);
-ctx.strokeRect(w*0.5, h*0.25, w*0.4, h*0.25);
-ctx.strokeRect(0, h/2, w*0.1, h*0.5);
-ctx.strokeRect(w*0.1, h*0.75, w*0.8, h*0.25);
-ctx.strokeRect(w*0.9, h/2, w*0.1, h*0.5);
-ctx.strokeRect(w*0.1, h*0.5, w*0.4, h*0.25);
-ctx.strokeRect(w*0.5, h*0.5, w*0.4, h*0.25);
+// コートの描画
+function court(){
+  ctx.strokeStyle = "#4f4f4f";
+  ctx.lineWidth = 1;
+  ctx.strokeRect(0, 0, w*0.1, h*0.5);
+  ctx.strokeRect(w*0.1, 0, w*0.8, h*0.25);
+  ctx.strokeRect(w*0.9, 0, w*0.1, h*0.5);
+  ctx.strokeRect(w*0.1, h*0.25, w*0.4, h*0.25);
+  ctx.strokeRect(w*0.5, h*0.25, w*0.4, h*0.25);
+  ctx.strokeRect(0, h/2, w*0.1, h*0.5);
+  ctx.strokeRect(w*0.1, h*0.75, w*0.8, h*0.25);
+  ctx.strokeRect(w*0.9, h/2, w*0.1, h*0.5);
+  ctx.strokeRect(w*0.1, h*0.5, w*0.4, h*0.25);
+  ctx.strokeRect(w*0.5, h*0.5, w*0.4, h*0.25);
+}
 
 
 // サーブのデータを入れる変数
@@ -113,41 +125,153 @@ var ad_y =  h;
 
 
 
-// サーブした場所と落ちたエリアの描画
-if(side == 'deuce') {
-  ellipse(deuce_x, deuce_y);
-  switch(course) {
-    case 'c':
-      ellipse(course_center_x, course_center_y);
-      line(deuce_x, deuce_y, course_center_x, course_center_y);
-    break;
-    case 'w':
-      ellipse(course_de_wide_x, course_de_wide_y);
-      line(deuce_x, deuce_y, course_de_wide_x, course_de_wide_y);
-    break;
-    case 'b':
-      ellipse(course_de_body_x, course_de_body_y);
-      line(deuce_x, deuce_y, course_de_body_x, course_de_body_y);
-    break;
+
+// CSVのデータを格納する各種変数
+var data = [];
+var WinLose = [];
+var FirstSecond = [];
+var course = [];
+var speed = [];
+var side = [];
+var player = [];
+
+//各コースのサーブの本数
+var count_D_C = 0;
+var count_D_B = 0;
+var count_D_W = 0;
+var count_A_C = 0;
+var count_A_B = 0;
+var count_A_W = 0;
+
+
+// ボールの起動を書く関数
+function ball_orbit(i) {
+  if(side[i] == 'Deuce') {
+    switch(course[i]) {
+      //Deuceからcenter ===
+      case 'c':
+        count_D_C++;
+        ctx.lineWidth = count_D_C;
+        line(deuce_x, deuce_y, course_center_x, course_center_y);
+      break;
+      // =================
+
+      //Deuceからwide
+      case 'w':
+        count_D_W++;
+        ctx.lineWidth = count_D_W;
+        line(deuce_x, deuce_y, course_de_wide_x, course_de_wide_y);
+      break;
+      // =================
+
+      //Deuceからbody
+      case 'b':
+        count_D_B++;
+        ctx.lineWidth = count_D_B;
+        line(deuce_x, deuce_y, course_de_body_x, course_de_body_y);
+      break;
+      // =================
+
+    }
+  } else if (side[i] == 'Ad') {
+    switch(course[i]) {
+      //Adからcenter ====
+      case 'c':
+        count_A_C++;
+        ctx.lineWidth = count_A_C;
+        line(ad_x, ad_y, course_center_x, course_center_y);
+      break;
+      //===============
+
+      //Adからwide ====
+      case 'w':
+        count_A_W++;
+        ctx.lineWidth = count_A_W;
+        line(ad_x, ad_y, course_ad_wide_x, course_ad_wide_y);
+      break;
+      //==============
+
+      //Adからbody ====
+      case 'b':
+        count_A_B++;
+        ctx.lineWidth = count_A_B;
+        line(ad_x, ad_y, course_ad_body_x, course_ad_body_y);
+      break;
+      //==============
+    }
   }
-} else if (side == 'ad') {
-  ellipse(ad_x, ad_y);
-  switch(course) {
-    case 'c':
-      ellipse(course_center_x, course_center_y);
-      line(ad_x, ad_y, course_center_x, course_center_y);
-    break;
-    case 'w':
-      ellipse(course_ad_wide_x, course_ad_wide_y);
-      line(ad_x, ad_y, course_ad_wide_x, course_ad_wide_y);
-    break;
-    case 'b':
-      ellipse(course_ad_body_x, course_ad_body_y);
-      line(ad_x, ad_y, course_ad_body_x, course_ad_body_y);
-    break;
-  }
+}
+
+//CSVファイルを読み込む
+
+// 読み込んだCSVデータを二次元配列に変換する関数convertCSVtoArray()の定義
+function convertCSVtoArray(str){ // 読み込んだCSVデータが文字列として渡される
+    var result = []; // 最終的な二次元配列を入れるための配列
+    var tmp = str.split("\n"); // 改行を区切り文字として行を要素とした配列を生成
+
+    // 各行ごとにカンマで区切った文字列を要素とした二次元配列を生成
+    for(var i=0;i<tmp.length;++i){
+        result[i] = tmp[i].split(',');
+    }
+    return result;
+}
+
+
+
+//CSVファイルを読み込む
+var req = new XMLHttpRequest(); // HTTPでファイルを読み込むためのXMLHttpRrequestオブジェクトを生成
+req.open("get", "20190102_Brisben.csv", true); // アクセスするファイルを指定
+req.send(); // HTTPリクエストの発行
+
+// レスポンスが返ってきたらconvertCSVtoArray()を呼ぶ
+req.onload = function(){
+    // ここに処理を描く
+    data = convertCSVtoArray(req.responseText); // 渡されるのは読み込んだCSVデータ
+    for(var i =0; i<data.length; i++){
+        WinLose[i] = data[i][7];
+        FirstSecond[i] = data[i][8];
+        course[i] = data[i][9];
+        speed[i] = data[i][10];
+        side[i] = data[i][14];
+        player[i] = data[i][6];
+    }
+    console.log(player);
+
+
+    ctx.strokeStyle = "#000000";
+    ctx.save();
+    ctx.translate(10, 10);
+    court(); // 1stサーブのコートの描画
+    for(var i = 0; i < side.length; i++){
+      if(player[i] == '圭'){
+        if(FirstSecond[i] == 1) {
+          ball_orbit(i);
+        }
+      }
+    }
+
+
+    ctx.font = "20pt serif";
+    ctx.fillStyle = "black";
+    ctx.fillText("1stサーブ", 150-ctx.measureText("1stサーブ").width/2, 650);
+
+
+
+    ctx.translate(320, 0);
+    court(); // 2ndサーブのコートの描画
+    for(var i = 0; i < side.length; i++){
+      if(player[i] == '圭'){
+        if(FirstSecond[i] == 2) {
+          ball_orbit(i);
+        }
+      }
+    }
+    ctx.fillText("2ndサーブ", 150-ctx.measureText("2ndサーブ").width/2, 650);
+    ctx.restore();
 }
 
 
 
 </script>
+</body>
+</html>
