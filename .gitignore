@@ -1,2 +1,3 @@
-#.htaccessはgithubのリポジトリにアップしない
-.hoge
+#以下のファイルはgithubのリポジトリにpushしない
+.htacccess
+.htpasswd
