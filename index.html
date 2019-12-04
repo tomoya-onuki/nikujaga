@@ -226,7 +226,10 @@ req.send(); // HTTPリクエストの発行
 // レスポンスが返ってきたらconvertCSVtoArray()を呼ぶ
 req.onload = function(){
     // ここに処理を描く
-    data = convertCSVtoArray(req.responseText); // 渡されるのは読み込んだCSVデータ
+
+    // 読み込んだＣＳＶファイル配列で取得
+    data = convertCSVtoArray(req.responseText);
+    // data配列をデータごとの配列に入れなおす
     for(var i =0; i<data.length; i++){
         WinLose[i] = data[i][7];
         FirstSecond[i] = data[i][8];
