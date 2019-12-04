@@ -2,11 +2,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+<link rel="stylesheet" type="text/css" href="Chartcss.css">
 <title>ページタイトル</title>
 </head>
 <body>
 
-<div id="container"></div>
+<div id="container" style="height:50%; width:50%"></div>
 <script type="text/javascript">
 var cvs = document.createElement("canvas");
 cvs.width = 1200;
@@ -45,12 +47,6 @@ function ellipse(x, y){
 }
 
 
-//スピード(120-210)を対応する彩度に変換する
-function color(speed){
-  var s = (speed - 120) / 90 * 255;
-  return s;
-}
-
 var rgb;
 
 // ボールの軌道を書く関数
@@ -58,7 +54,6 @@ function line(x1, y1, x2, y2){
   var h = 180;
   var s = 255;
   var v = 255;
-  s = color(speed);
   rgb = hsv2rgb(h, s, v);
   ctx.strokeStyle = rgb;
   ctx.strokeStyle = "#000000";
@@ -240,6 +235,39 @@ req.onload = function(){
     }
     console.log(player);
 
+    var chart = [];
+    var chart_colors = [];
+for(var i =0; i<data.length; i++){
+  var chart_x = [];
+
+  switch(course[i]) {
+      //Adからcenter ====
+      case 'c':
+        chart_x[i] = 10;
+      break;
+      //===============
+      //Adからwide ====
+      case 'w':
+        chart_x[i] = 30;
+      break;
+      //==============
+      //Adからbody ====
+      case 'b':
+        chart_x[i] = 20;
+      break;
+      //==============
+      //default:
+
+    }
+    chart[i] = {x: chart_x[i], y: Number(speed[i])};
+
+    if(WinLose[i] == '○'){
+      chart_colors[i] = 'rgba(255, 0, 0, 0.2)';
+    }else{
+      chart_colors[i] = 'rgba(0, 0, 255, 0.2)';
+    }
+}
+
 
     ctx.strokeStyle = "#000000";
     ctx.save();
@@ -271,10 +299,76 @@ req.onload = function(){
     }
     ctx.fillText("2ndサーブ", 150-ctx.measureText("2ndサーブ").width/2, 650);
     ctx.restore();
+
+
+    // chart.jsで速度、落下エリア、勝敗を散布図で描画
+    ctx.translate(320, 0);
+
+    console.log(chart_colors);
+
+    var scatter_data = {
+      datasets:[{
+        label: "schatter dots",
+        data: chart,
+        borderColor: chart_colors,
+        backgroundColor: chart_colors,
+        pointRadius: 5,
+
+      }]
+    };
+
+    // var ctx = document.getElementById('canvas2').getContext('2d');
+    window.myScatter = Chart.Scatter(ctx, {
+      data: scatter_data,
+      options:{
+        scales:{
+          yAxes :[{
+            display: true,
+            scaleLabel:{
+              display: true,
+              labelString: '速度',
+              fontSize: 10
+            },
+            ticks: {                      //最大値最小値設定
+              min: 100,                   //最小値
+              max: 230,                  //最大値
+              fontSize: 10,             //フォントサイズ
+              stepSize: 20,              //軸間隔
+            },
+          }],
+          xAxes: [{                         //x軸設定
+            display: true,                //表示設定
+            scaleLabel: {                 //軸ラベル設定
+               display: true,             //表示設定
+               labelString: 'サーブの落ちたエリア',  //ラベル
+               fontSize: 10               //フォントサイズ
+            },
+
+            ticks: {
+                display: false,
+                min: 0,
+                max: 40,
+                fontSize: 10,
+                stepSize: 10
+            },
+        }],
+
+        },
+        title: {
+          display: true,
+          text: "Chart.js Scatter Chart"
+        },
+      }
+    });
+
+
+
 }
 
-
-
 </script>
+<!-- <div id="chartContainer" style="height:70%; width:70%">
+  <canvas id="canvas2"> </canvas>
+</div>
+<script src="Chartjavascript.js"></script> -->
 </body>
 </html>
