@@ -8,119 +8,7 @@
 </head>
 <body>
 
-<div id="container" style="height:50%; width:50%"></div>
-<script type="text/javascript">
-var cvs = document.createElement("canvas");
-cvs.width = 1200;
-cvs.height = 1200;
-document.getElementById("container").appendChild(cvs);
-var ctx = cvs.getContext("2d");
-
-// hsv から rgb　へ変換
-function hsv2rgb(h, s, v) {
-    var r, g, b;
-    s /= 255;
-    var i = (0|(h / 60)) % 6,
-    f = (h / 60) - i,
-    p = v * (1 - s),
-    q = v * (1 - f * s),
-    t = v * (1 - (1 - f) * s);
-    switch (i) {
-        case 0: r = v; g = t; b = p; break;
-        case 1: r = q; g = v; b = p; break;
-        case 2: r = p; g = v; b = t; break;
-        case 3: r = p; g = q; b = v; break;
-        case 4: r = t; g = p; b = v; break;
-        case 5: r = v; g = p; b = q; break;
-    }
-    return [0|r, 0|g, 0|b];
- }
-
-// 円を書く関数
-function ellipse(x, y){
-  ctx.lineWidth = 1;
-  ctx.strokeStyle = "black";
-  ctx.beginPath();
-  ctx.moveTo(x, y);
-  ctx.arc(x, y, 5, 0, 2 * Math.PI);
-  ctx.fill();
-}
-
-
-var rgb;
-
-// ボールの軌道を書く関数
-function line(x1, y1, x2, y2){
-  var h = 180;
-  var s = 255;
-  var v = 255;
-  rgb = hsv2rgb(h, s, v);
-  ctx.strokeStyle = rgb;
-  ctx.strokeStyle = "#000000";
-  ctx.lineCap = "round";
-  ctx.beginPath();
-  ctx.moveTo(x1, y1);
-  ctx.lineTo(x2, y2);
-  // ctx.closePath();
-  ctx.stroke();
-}
-
-
-// コートで使う変数
-var w = 300;
-var h = 600;
-// コートの描画
-function court(){
-  ctx.strokeStyle = "#4f4f4f";
-  ctx.lineWidth = 1;
-  ctx.strokeRect(0, 0, w*0.1, h*0.5);
-  ctx.strokeRect(w*0.1, 0, w*0.8, h*0.25);
-  ctx.strokeRect(w*0.9, 0, w*0.1, h*0.5);
-  ctx.strokeRect(w*0.1, h*0.25, w*0.4, h*0.25);
-  ctx.strokeRect(w*0.5, h*0.25, w*0.4, h*0.25);
-  ctx.strokeRect(0, h/2, w*0.1, h*0.5);
-  ctx.strokeRect(w*0.1, h*0.75, w*0.8, h*0.25);
-  ctx.strokeRect(w*0.9, h/2, w*0.1, h*0.5);
-  ctx.strokeRect(w*0.1, h*0.5, w*0.4, h*0.25);
-  ctx.strokeRect(w*0.5, h*0.5, w*0.4, h*0.25);
-}
-
-
-// サーブのデータを入れる変数
-var side = 'ad';   //サーブした場所 deuceかad
-var course = 'w'; //落ちたエリア c,w,b
-
-// 落ちたエリア別の座標
-// センターの座標
-var course_center_x =  w*0.5;
-var course_center_y =  h*0.25;
-
-// adから打ったときのワイド
-var course_ad_wide_x = w*0.9;
-var course_ad_wide_y = h*0.25;
-
-// adから打ったときのボディ
-var course_ad_body_x = w*0.7;
-var course_ad_body_y = h*0.25;
-
-// deuceから打ったときのワイド
-var course_de_wide_x = w*0.1;
-var course_de_wide_y = h*0.25;
-
-// deuceから打ったときのボディ
-var course_de_body_x = w*0.3;
-var course_de_body_y = h*0.25;
-
-// サーブした場所別の座標
-var deuce_x = w*0.7;
-var deuce_y = h;
-
-var ad_x =  w*0.3;
-var ad_y =  h;
-
-
-
-
+<script>
 // CSVのデータを格納する各種変数
 var data = [];
 var WinLose = [];
@@ -130,74 +18,14 @@ var speed = [];
 var side = [];
 var player = [];
 
-//各コースのサーブの本数
-var count_D_C = 0;
-var count_D_B = 0;
-var count_D_W = 0;
-var count_A_C = 0;
-var count_A_B = 0;
-var count_A_W = 0;
+var chart_win = [];
+var chart_lose = [];
+var chart_win2 = [];
+var chart_lose2 = [];
+var chart_color_win = 'rgba(255, 0, 0, 0.2)';
+var chart_color_lose = 'rgba(0, 0, 255, 0.2)';
 
-
-// ボールの起動を書く関数
-function ball_orbit(i) {
-  if(side[i] == 'Deuce') {
-    switch(course[i]) {
-      //Deuceからcenter ===
-      case 'c':
-        count_D_C++;
-        ctx.lineWidth = count_D_C;
-        line(deuce_x, deuce_y, course_center_x, course_center_y);
-      break;
-      // =================
-
-      //Deuceからwide
-      case 'w':
-        count_D_W++;
-        ctx.lineWidth = count_D_W;
-        line(deuce_x, deuce_y, course_de_wide_x, course_de_wide_y);
-      break;
-      // =================
-
-      //Deuceからbody
-      case 'b':
-        count_D_B++;
-        ctx.lineWidth = count_D_B;
-        line(deuce_x, deuce_y, course_de_body_x, course_de_body_y);
-      break;
-      // =================
-
-    }
-  } else if (side[i] == 'Ad') {
-    switch(course[i]) {
-      //Adからcenter ====
-      case 'c':
-        count_A_C++;
-        ctx.lineWidth = count_A_C;
-        line(ad_x, ad_y, course_center_x, course_center_y);
-      break;
-      //===============
-
-      //Adからwide ====
-      case 'w':
-        count_A_W++;
-        ctx.lineWidth = count_A_W;
-        line(ad_x, ad_y, course_ad_wide_x, course_ad_wide_y);
-      break;
-      //==============
-
-      //Adからbody ====
-      case 'b':
-        count_A_B++;
-        ctx.lineWidth = count_A_B;
-        line(ad_x, ad_y, course_ad_body_x, course_ad_body_y);
-      break;
-      //==============
-    }
-  }
-}
-
-//CSVファイルを読み込む
+var flag = false;
 
 // 読み込んだCSVデータを二次元配列に変換する関数convertCSVtoArray()の定義
 function convertCSVtoArray(str){ // 読み込んだCSVデータが文字列として渡される
@@ -211,196 +39,164 @@ function convertCSVtoArray(str){ // 読み込んだCSVデータが文字列と�
     return result;
 }
 
+  //CSVファイルを読み込む
+  var req = new XMLHttpRequest(); // HTTPでファイルを読み込むためのXMLHttpRrequestオブジェクトを生成
+  req.open("get", "20190102_Brisben.csv", true); // アクセスするファイルを指定
+  req.send(); // HTTPリクエストの発行
 
+  // レスポンスが返ってきたらconvertCSVtoArray()を呼ぶ
 
-//CSVファイルを読み込む
-var req = new XMLHttpRequest(); // HTTPでファイルを読み込むためのXMLHttpRrequestオブジェクトを生成
-req.open("get", "20190102_Brisben.csv", true); // アクセスするファイルを指定
-req.send(); // HTTPリクエストの発行
+  req.onload = function(){
+      // ここに処理を描く
 
-// レスポンスが返ってきたらconvertCSVtoArray()を呼ぶ
-req.onload = function(){
-    // ここに処理を描く
-
-    // 読み込んだＣＳＶファイル配列で取得
-    data = convertCSVtoArray(req.responseText);
-    // data配列をデータごとの配列に入れなおす
-    for(var i =0; i<data.length; i++){
-        WinLose[i] = data[i][7];
-        FirstSecond[i] = data[i][8];
-        course[i] = data[i][9];
-        speed[i] = data[i][10];
-        side[i] = data[i][14];
-        player[i] = data[i][6];
-    }
-    console.log(player);
-
-    // var chart_win = [];
-    // var chart_lose = [];
-    // var chart_color_win = 'rgba(255, 0, 0, 0.2)';
-    // var chart_color_lose = 'rgba(0, 0, 255, 0.2)';
-    // var j = 0, k = 0;
-    // for(var i =0; i<data.length; i++){
-    //     if(WinLose[i] == '○'){
-    //       //if(WinLose[i] == '○'){
-    //       var chart_x = [];
-    //
-    //       switch(course[i]) {
-    //           //Adからcenter ====
-    //           case 'c':
-    //             chart_x[j] = "Center";
-    //           break;
-    //           //===============
-    //           //Adからwide ====
-    //           case 'w':
-    //             chart_x[j] = "Wide";
-    //           break;
-    //           //==============
-    //           //Adからbody ====
-    //           case 'b':
-    //             chart_x[j] = "Body";
-    //           break;
-    //           //==============
-    //           //default:
-    //
-    //       }
-    //       chart_win[j] = {x: chart_x[j], y: Number(speed[i])};
-    //       j++;
-    //     }else{
-    //       var chart_x = [];
-    //
-    //       switch(course[i]) {
-    //           //Adからcenter ====
-    //           case 'c':
-    //             chart_x[k] = "Center";
-    //           break;
-    //           //===============
-    //           //Adからwide ====
-    //           case 'w':
-    //             chart_x[k] = "Wide";
-    //           break;
-    //           //==============
-    //           //Adからbody ====
-    //           case 'b':
-    //             chart_x[k] = "Body";
-    //           break;
-    //           //==============
-    //           //default:
-    //       }
-    //       chart_lose[k] = {x: chart_x[k], y: Number(speed[i])};
-    //       k++;
-    //     }
-    //     // chart_colors2 = 'rgba(0, 0, 255, 0.2)';
-    // }
-
-
-    ctx.strokeStyle = "#000000";
-    ctx.save();
-    ctx.translate(10, 10);
-    court(); // 1stサーブのコートの描画
-    for(var i = 0; i < side.length; i++){
-      if(player[i] == '圭'){
-        if(FirstSecond[i] == 1) {
-          ball_orbit(i);
-        }
+      // 読み込んだＣＳＶファイル配列で取得
+      data = convertCSVtoArray(req.responseText);
+      // data配列をデータごとの配列に入れなおす
+      for(var i =0; i<data.length; i++){
+          WinLose[i] = data[i][7];
+          FirstSecond[i] = data[i][8];
+          course[i] = data[i][9];
+          speed[i] = data[i][10];
+          side[i] = data[i][14];
+          player[i] = data[i][6];
       }
-    }
 
 
-    ctx.font = "20pt serif";
-    ctx.fillStyle = "black";
-    ctx.fillText("1stサーブ", 150-ctx.measureText("1stサーブ").width/2, 650);
+      //チャートに入れるデータを整理する
+      var chart_x;
 
+      var j = 0, k = 0;
+      for(var i =0; i<data.length; i++){
+        if(player[i]=='圭'){
+          if(FirstSecond[i]==1){
+            if(WinLose[i] == '○'){
+              //if(WinLose[i] == '○'){
 
+              switch(course[i]) {
+                  //Adからcenter ====
+                  case 'c':
+                    chart_x = "Center";
+                  break;
+                  //===============
+                  //Adからwide ====
+                  case 'w':
+                    chart_x = "Wide";
+                  break;
+                  //==============
+                  //Adからbody ====
+                  case 'b':
+                    chart_x = "Body";
+                  break;
+                  //==============
+                  //default:
 
-    ctx.translate(320, 0);
-    court(); // 2ndサーブのコートの描画
-    for(var i = 0; i < side.length; i++){
-      if(player[i] == '圭'){
-        if(FirstSecond[i] == 2) {
-          ball_orbit(i);
+              }
+              chart_win[j] = {x: chart_x, y: Number(speed[i])};
+              j++;
+            }else{
+
+              switch(course[i]) {
+                  //Adからcenter ====
+                  case 'c':
+                    chart_x = "Center";
+                  break;
+                  //===============
+                  //Adからwide ====
+                  case 'w':
+                    chart_x = "Wide";
+                  break;
+                  //==============
+                  //Adからbody ====
+                  case 'b':
+                    chart_x = "Body";
+                  break;
+                  //==============
+                  //default:
+              }
+              chart_lose[k] = {x: chart_x, y: Number(speed[i])};
+              k++;
+            }
+          }else{
+            if(WinLose[i] == '○'){
+              //if(WinLose[i] == '○'){
+
+              switch(course[i]) {
+                  //Adからcenter ====
+                  case 'c':
+                    chart_x = "Center";
+                  break;
+                  //===============
+                  //Adからwide ====
+                  case 'w':
+                    chart_x = "Wide";
+                  break;
+                  //==============
+                  //Adからbody ====
+                  case 'b':
+                    chart_x = "Body";
+                  break;
+                  //==============
+                  //default:
+
+              }
+              chart_win2[j] = {x: chart_x, y: Number(speed[i])};
+              j++;
+            }else{
+
+              switch(course[i]) {
+                  //Adからcenter ====
+                  case 'c':
+                    chart_x = "Center";
+                  break;
+                  //===============
+                  //Adからwide ====
+                  case 'w':
+                    chart_x = "Wide";
+                  break;
+                  //==============
+                  //Adからbody ====
+                  case 'b':
+                    chart_x = "Body";
+                  break;
+                  //==============
+                  //default:
+              }
+              chart_lose2[k] = {x: chart_x, y: Number(speed[i])};
+              k++;
+            }
+
+          }
+
         }
+          // chart_colors2 = 'rgba(0, 0, 255, 0.2)';
       }
-    }
-    ctx.fillText("2ndサーブ", 150-ctx.measureText("2ndサーブ").width/2, 650);
-    ctx.restore();
+      console.log(player);
+
+      // SCRIPTタグの生成
+      var el1 = document.createElement("script");
+      var el2 = document.createElement("script");
+      var el3 = document.createElement("script");
+      // SCRIPTタグのSRC属性に読み込みたいファイルを指定
+      el1.src = "court.js";
+      el2.src = "scatter.js";
+      el3.src = "scatter2.js";
+      // BODY要素の最後に追加
+      document.body.appendChild(el1);
+      document.body.appendChild(el2);
+      document.body.appendChild(el3);
+      console.log(flag);
+  }
 
 
-    // chart.jsで速度、落下エリア、勝敗を散布図で描画
-  //  console.log(chart_colors);
 
-//     var scatter_data = {
-//       datasets:[{
-//         label: "win",
-//         data: chart_win,
-//         borderColor: chart_color_win,
-//         backgroundColor: chart_color_win,
-//         pointRadius: 5,
-//
-//       },
-//       {
-//         label: "lose",
-//         data: chart_lose,
-//         borderColor: chart_color_lose,
-//         backgroundColor: chart_color_lose,
-//         pointRadius: 5,
-//
-//       }],
-//     };
-//     console.log(scatter_data);
-//
-//     // var ctx = document.getElementById('canvas2').getContext('2d');
-//     window.myScatter = Chart.Scatter(ctx, {
-//       data: scatter_data,
-//       options:{
-//         scales:{
-//           yAxes :[{
-//             display: true,
-//             scaleLabel:{
-//               display: true,
-//               labelString: '速度',
-//               fontSize: 10
-//             },
-//             ticks: {                      //最大値最小値設定
-//               min: 100,                   //最小値
-//               max: 230,                  //最大値
-//               fontSize: 10,             //フォントサイズ
-//               stepSize: 20,              //軸間隔
-//             },
-//           }],
-//           xAxes: [{                         //x軸設定
-//             type: 'category',
-//             labels: ['','Center', 'Body', 'Wide',' '],
-//             display: true,                //表示設定
-//             scaleLabel: {                 //軸ラベル設定
-//                display: true,             //表示設定
-//                labelString: 'サーブの落ちたエリア',  //ラベル
-//                fontSize: 10               //フォントサイズ
-//             },
-//
-//             ticks: {
-//                 display: true,
-//                 min: '',
-//                 max: ' ',
-//                 fontSize: 10,
-//                 stepSize: 10,
-//             },
-//         }],
-//
-//         },
-//         title: {
-//           display: true,
-//           text: "Chart.js Scatter Chart"
-//         },
-//       }
-//     });
-//
-//
-//
-}
+  </script>
 
-</script>
-// <!-- <div id="chartContainer" style="height:70%; width:70%">
+<div id="container1" style="height:50%; width:50%"></div>
+<div id="container2" style="height:50%; width:50%"></div>
+<div id="container3" style="height:50%; width:50%"></div>
+<!-- <script type="text/javascript">
+</script> -->
+<!-- <div id="chartContainer" style="height:70%; width:70%">
 //   <canvas id="canvas2"> </canvas>
 // </div>
 // <script src="Chartjavascript.js"></script> -->
