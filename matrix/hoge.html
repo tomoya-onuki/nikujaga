@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>ページタイトル</title>
+</head>
+<body>
+
+<div id="container"></div>
+<script type="text/javascript">
+var cvs = document.createElement("canvas");
+cvs.width = 100;
+cvs.height = 100;
+document.getElementById("container").appendChild(cvs);
+var ctx = cvs.getContext("2d");
+
+
+
+/* *********************** */
+/* ここから下をpointsクラスに書く */
+
+// hsv から rgb　へ変換する関数
+function hsv2rgb(h, s, v) {
+    var r, g, b;
+    s /= 255;
+    var i = (0|(h / 60)) % 6,
+    f = (h / 60) - i,
+    p = v * (1 - s),
+    q = v * (1 - f * s),
+    t = v * (1 - (1 - f) * s);
+    switch (i) {
+        case 0: r = v; g = t; b = p; break;
+        case 1: r = q; g = v; b = p; break;
+        case 2: r = p; g = v; b = t; break;
+        case 3: r = p; g = q; b = v; break;
+        case 4: r = t; g = p; b = v; break;
+        case 5: r = v; g = p; b = q; break;
+    }
+    return [0|r, 0|g, 0|b];
+ }
+
+// 図形のサイズ
+var size = 10;
+// 円を書く関数
+function ellipse(){
+  ctx.beginPath();
+  ctx.moveTo(size/2, size/2);
+  ctx.arc(size/2, size/2, size/2, 0, 2 * Math.PI);
+  ctx.fill();
+}
+
+// 四角形の描画
+function rect(){
+  ctx.fillRect(0, 0, size, size);
+}
+
+var speed = 120;
+var side = 'Deuce';
+var course = 'b';
+
+// 落ちた場所の情報を色相に変換する関数
+function course2hue() {
+  switch (me.course) {
+    case 'c':
+      return 0;   // 赤
+    case 'b':
+      return 120; // 緑
+    case 'w':
+      return 240; // 青
+  }
+}
+
+
+// ボールの速さの情報を明度に変換する関数
+function speed2value() {
+  return ((me.speed - 100) * 255 / 128 - 255) * -1;
+}
+
+
+// ラリーの情報を描画する関数
+function draw(){
+
+  var hue = course2hue();     // 落ちた場所の情報を色相に変換
+  var value = speed2value();  // ボールの速さの情報を明度に変換
+  var saturation = 200;       // 彩度、これを変えて色味の見栄えを変化できる！
+  var color = hsv2rgb(hue, saturation, value);
+  console.log(hue);
+  console.log(value);
+  console.log(color);
+
+  ctx.fillStyle = 'rgb('+color[0]+','+color[1]+','+color[2]+')'; // 色を指定
+  if(me.side == 'Ad'){
+    rect();
+  } else if(me.side == 'Deuce'){
+    ellipse();
+  }
+}
+
+/* ここから上をpointsクラスに書く */
+/* *********************** */
+
+draw();
+
+
+</script>
+</body>
+</html>
