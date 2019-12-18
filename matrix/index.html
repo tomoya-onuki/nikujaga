@@ -42,10 +42,12 @@ var games_x = 0;
 var games_y = 0;
 
 // セット数の状況
-var sets = new Array(3);
+var sets = new Array(2);
 for(var i = 0; i < sets.length; i++){
-  sets[i] = new Array(3);
+  sets[i] = new Array(2);
 }
+var sets_x = 0;
+var sets_y = 0;
 
 function contents(side,course,speed){
   var me = this;
@@ -71,6 +73,13 @@ function convertCSVtoArray(str){ // 読み込んだCSVデータが文字列と�
     return result;
 }
 
+function games_reset(){
+  for(var n = 0; n < games.length; n++){
+    for(var m = 0; m < games.length; m++){
+      games[n][m] = 0;
+    }
+  }
+}
 
 
 //CSVファイルを読み込む
@@ -85,7 +94,7 @@ req.onload = function(){
     // 読み込んだＣＳＶファイル配列で取得
     data = convertCSVtoArray(req.responseText);
     // data配列をデータごとの配列に入れなおす
-    for(var i =0; i<28; i++){
+    for(var i =0; i<data.length; i++){
         WinLose[i] = data[i][7];
         FirstSecond[i] = data[i][8];
         course[i] = data[i][9];
@@ -129,6 +138,32 @@ req.onload = function(){
               games_x++;
             }
           }
+        }
+
+        if(games_x == 6 && games_y < 5){
+          sets[sets_x][sets_y] = games;
+          sets_x++;
+          games_x = 0;
+          games_y = 0;
+          games_reset();
+        }else if(games_y == 6 && games_x < 5){
+          sets[sets_x][sets_y] = games;
+          sets_y++;
+          games_x = 0;
+          games_y = 0;
+          games_reset();
+        }else if(games_x == 7){
+          sets[sets_x][sets_y] = games;
+          sets_x++;
+          games_x = 0;
+          games_y = 0;
+          games_reset();
+        }else if(games_y == 7){
+          sets[sets_x][sets_y] = games;
+          sets_y++;
+          games_x = 0;
+          games_y = 0;
+          games_reset();
         }
 
         switch(ScoreServer[i]){
@@ -206,7 +241,7 @@ req.onload = function(){
         }
 
     }
-    console.log(games);
+    console.log(sets);
 
 }
 
