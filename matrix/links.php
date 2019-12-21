@@ -11,7 +11,7 @@
   for ($i = 0; $i < count($file_names); $i++) {
     $game_title = explode("/", $file_names[$i]);
     $game_title = explode(".", $game_title[count($game_title)-1]);
-    echo '<a target="_blank" href="https://cgi.u.tsukuba.ac.jp/~s1711441/test/vis.php?file_name='.$file_names[$i].'">'.$game_title[0].'</a><br>'."\n";
+    echo '<a target="_blank" href="./vis.php?file_name='.$file_names[$i].'">'.$game_title[0].'</a><br>'."\n";
   }
   ?>
   </body>
