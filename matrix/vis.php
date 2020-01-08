@@ -46,11 +46,12 @@ var ScoreReturner = [];
 // sets.fill(0);
 // console.log(sets);
 
-function contents(side,course,speed){
+function contents(side,course,speed,player){
   var me = this;
   me.side = side;
   me.course = course;
   me.speed = speed;
+  me.player = player;
   // hsv から rgb　へ変換する関数
   me.hsv2rgb = function(h, s, v) {
       var r, g, b;
@@ -74,16 +75,17 @@ function contents(side,course,speed){
   // 図形のサイズ
   var size = 10;
   // 円を書く関数
-  me.ellipse = function(){
+  me.ellipse = function(rad){
+    console.log(rad);
     ctx.beginPath();
     ctx.moveTo(size/2, size/2);
-    ctx.arc(size/2, size/2, size/2, 0, 2 * Math.PI);
+    ctx.arc(size/2, size/2, rad, 0, 2 * Math.PI);
     ctx.fill();
   }
 
   // 四角形の描画
   me.rect = function(){
-    ctx.fillRect(0, 0, size, size);
+    ctx.fillRect(0, 0, size*0.8, size*0.8);
   }
 
 
@@ -103,28 +105,28 @@ function contents(side,course,speed){
 
   // ボールの速さの情報を明度に変換する関数
   me.speed2value = function() {
-    if(me.speed == '') return 0;
-    return ((me.speed - 100) * 255 / 128 - 255) * -1;
+    if(me.speed == '') return 200;
+    return (me.speed - 100) * 255 / 128;
+  }
+
+  //ボールの速さを円の大きさに変える変数
+  me.speed2rad = function() {
+    if(me.speed == '') return 4; // スピードがなければ中央値4を返す
+    if(me.speed < 100) return 1; // スピードが１００以下なら外れ値と判断して１にする
+    return (me.speed - 100) * 4 / 128 + 2; // スピードを100~228m/sの範囲から2~6の範囲にする
   }
 
 
   // ラリーの情報を描画する関数
   me.draw = function(ctx){
 
-    var hue = me.course2hue();     // 落ちた場所の情報を色相に変換
-    var value = me.speed2value();  // ボールの速さの情報を明度に変換
-    var saturation = 200;       // 彩度、これを変えて色味の見栄えを変化できる！
+    var hue = me.course2hue();  // 落ちた場所の情報を色相に変換
+    var value = 200;            // 明度、固定
+    var saturation = 200;       // 彩度、固定
     var color = me.hsv2rgb(hue, saturation, value);
-    // console.log(hue);
-    // console.log(value);
-    // console.log(color);
 
     ctx.fillStyle = 'rgb('+color[0]+','+color[1]+','+color[2]+')'; // 色を指定
-    if(me.side == 'Ad'){
-      me.rect();
-    } else if(me.side == 'Deuce'){
-      me.ellipse();
-    }
+    me.ellipse(me.speed2rad());
   }
 }
 
@@ -144,14 +146,6 @@ function convertCSVtoArray(str){ // 読み込んだCSVデータが文字列と�
     }
     return result;
 }
-
-// function games_reset(){
-//   for(var n = 0; n < games.length; n++){
-//     for(var m = 0; m < games.length; m++){
-//       games[n][m] = 0;
-//     }
-//   }
-// }
 
 
 
@@ -284,7 +278,7 @@ req.onload = function(){
           set_flag++;
           // games_reset();
         }
-        console.log(sets_x, sets_y, games_x, games_y)
+        // console.log(sets_x, sets_y, games_x, games_y)
 
         if(player[i] == '圭'){
 
@@ -292,16 +286,16 @@ req.onload = function(){
           case "0":
             switch(ScoreReturner[i]){
               case "0":
-                sets[sets_x][sets_y][games_x][games_y][0][0] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][0][0] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "15":
-                sets[sets_x][sets_y][games_x][games_y][0][1] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][0][1] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "30":
-                sets[sets_x][sets_y][games_x][games_y][0][2] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][0][2] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "40":
-                sets[sets_x][sets_y][games_x][games_y][0][3] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][0][3] = new contents(side[i],course[i],speed[i],player[i]);
               break;
 
             }
@@ -309,56 +303,56 @@ req.onload = function(){
           case "15":
             switch(ScoreReturner[i]){
               case "0":
-                sets[sets_x][sets_y][games_x][games_y][1][0] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][1][0] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "15":
-                sets[sets_x][sets_y][games_x][games_y][1][1] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][1][1] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "30":
-                sets[sets_x][sets_y][games_x][games_y][1][2] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][1][2] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "40":
-                sets[sets_x][sets_y][games_x][games_y][1][3] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][1][3] = new contents(side[i],course[i],speed[i],player[i]);
               break;
             }
           break;
           case "30":
             switch(ScoreReturner[i]){
               case "0":
-                sets[sets_x][sets_y][games_x][games_y][2][0] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][2][0] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "15":
-                sets[sets_x][sets_y][games_x][games_y][2][1] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][2][1] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "30":
-                sets[sets_x][sets_y][games_x][games_y][2][2] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][2][2] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "40":
-                sets[sets_x][sets_y][games_x][games_y][2][3] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][2][3] = new contents(side[i],course[i],speed[i],player[i]);
               break;
             }
           break;
           case "40":
             switch(ScoreReturner[i]){
               case "0":
-                sets[sets_x][sets_y][games_x][games_y][3][0] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][3][0] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "15":
-                sets[sets_x][sets_y][games_x][games_y][3][1] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][3][1] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "30":
-                sets[sets_x][sets_y][games_x][games_y][3][2] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][3][2] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "40":
-                sets[sets_x][sets_y][games_x][games_y][3][3] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][3][3] = new contents(side[i],course[i],speed[i],player[i]);
               break;
-              case "ad":
-                sets[sets_x][sets_y][games_x][games_y][3][4] = new contents(side[i],course[i],speed[i]);
+              case "Ad":
+                sets[sets_x][sets_y][games_x][games_y][3][4] = new contents(side[i],course[i],speed[i],player[i]);
               break;
             }
           break;
-          case "ad":
-            sets[sets_x][sets_y][games_x][games_y][4][3] = new contents(side[i],course[i],speed[i]);
+          case "Ad":
+            sets[sets_x][sets_y][games_x][games_y][4][3] = new contents(side[i],course[i],speed[i],player[i]);
           break;
         }
       } else {
@@ -366,16 +360,16 @@ req.onload = function(){
           case "0":
             switch(ScoreReturner[i]){
               case "0":
-                sets[sets_x][sets_y][games_x][games_y][0][0] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][0][0] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "15":
-                sets[sets_x][sets_y][games_x][games_y][1][0] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][1][0] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "30":
-                sets[sets_x][sets_y][games_x][games_y][2][0] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][2][0] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "40":
-                sets[sets_x][sets_y][games_x][games_y][3][0] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][3][0] = new contents(side[i],course[i],speed[i],player[i]);
               break;
 
             }
@@ -383,56 +377,56 @@ req.onload = function(){
           case "15":
             switch(ScoreReturner[i]){
               case "0":
-                sets[sets_x][sets_y][games_x][games_y][0][1] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][0][1] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "15":
-                sets[sets_x][sets_y][games_x][games_y][1][1] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][1][1] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "30":
-                sets[sets_x][sets_y][games_x][games_y][2][1] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][2][1] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "40":
-                sets[sets_x][sets_y][games_x][games_y][3][1] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][3][1] = new contents(side[i],course[i],speed[i],player[i]);
               break;
             }
           break;
           case "30":
             switch(ScoreReturner[i]){
               case "0":
-                sets[sets_x][sets_y][games_x][games_y][0][2] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][0][2] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "15":
-                sets[sets_x][sets_y][games_x][games_y][1][2] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][1][2] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "30":
-                sets[sets_x][sets_y][games_x][games_y][2][2] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][2][2] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "40":
-                sets[sets_x][sets_y][games_x][games_y][3][2] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][3][2] = new contents(side[i],course[i],speed[i],player[i]);
               break;
             }
           break;
           case "40":
             switch(ScoreReturner[i]){
               case "0":
-                sets[sets_x][sets_y][games_x][games_y][0][3] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][0][3] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "15":
-                sets[sets_x][sets_y][games_x][games_y][1][3] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][1][3] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "30":
-                sets[sets_x][sets_y][games_x][games_y][2][3] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][2][3] = new contents(side[i],course[i],speed[i],player[i]);
               break;
               case "40":
-                sets[sets_x][sets_y][games_x][games_y][3][3] = new contents(side[i],course[i],speed[i]);
+                sets[sets_x][sets_y][games_x][games_y][3][3] = new contents(side[i],course[i],speed[i],player[i]);
               break;
-              case "ad":
-                sets[sets_x][sets_y][games_x][games_y][4][3] = new contents(side[i],course[i],speed[i]);
+              case "Ad":
+                sets[sets_x][sets_y][games_x][games_y][4][3] = new contents(side[i],course[i],speed[i],player[i]);
               break;
             }
           break;
-          case "ad":
-            sets[sets_x][sets_y][games_x][games_y][3][4] = new contents(side[i],course[i],speed[i]);
+          case "Ad":
+            sets[sets_x][sets_y][games_x][games_y][3][4] = new contents(side[i],course[i],speed[i],player[i]);
           break;
         }
       }
@@ -441,7 +435,6 @@ req.onload = function(){
     // console.log(sets);
 
     // sets[0][0][0][0][0][0].draw(ctx);
-
     for(var a=0; a<set_max; a++){
       for(var b=0; b<set_max; b++){
         ctx.save();
@@ -460,7 +453,16 @@ req.onload = function(){
                 if(sets[a][b][c][d][i][j] != 0){
                   sets[a][b][c][d][i][j].draw(ctx);
                 }else{
-                  ctx.fillStyle = '#efefef';
+                  // 背景色の指定
+                  if(sets[a][b][c][d][0][0] != 0) {
+                    // サーバーが圭なら青
+                    if(sets[a][b][c][d][0][0].player == "圭") ctx.fillStyle = '#d9e9f9';
+                    // サーバーが圭以外なら黄色
+                    else ctx.fillStyle = '#f9efae';
+                  } else {
+                    // それ以外はグレー
+                    ctx.fillStyle = '#efefef';
+                  }
                   ctx.fillRect(0, 0, 10, 10);
                 }
                 ctx.restore();
