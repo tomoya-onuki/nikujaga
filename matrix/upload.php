@@ -7,8 +7,8 @@
 </head>
 
 
-<body class="body">
-
+<body>
+	<a href="./links.php">トップージへ</a>
   <form action="./uploaded.php" method="post" enctype="multipart/form-data">
     <p>ファイルをアップロード : <input type="file" multiple name="file"></p>
     <p><input type="submit" value="送信"><input type="reset" value="リセット"></p>

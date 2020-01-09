@@ -14,5 +14,6 @@
     echo '<a target="_blank" href="./vis.php?file_name='.$file_names[$i].'">'.$game_title[0].'</a><br>'."\n";
   }
   ?>
+  <p><a target="_blank" href="./upload.php">ファイルアップロードはここから</a></p>
   </body>
 </html>
