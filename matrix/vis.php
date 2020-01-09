@@ -113,6 +113,7 @@ function contents(side,course,speed,player){
   me.speed2rad = function() {
     if(me.speed == '') return 4; // スピードがなければ中央値4を返す
     if(me.speed < 100) return 1; // スピードが１００以下なら外れ値と判断して１にする
+    if(me.speed > 228) return 6; // スピードが228以なら外れ値と判断して１にする
     return (me.speed - 100) * 4 / 128 + 2; // スピードを100~228m/sの範囲から2~6の範囲にする
   }
 
