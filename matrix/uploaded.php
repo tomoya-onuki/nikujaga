@@ -7,11 +7,11 @@ $msg = "";
 if( strlen($_FILES['file']['name']) != 0) {
   if(is_uploaded_file($_FILES["file"]["tmp_name"])){
 
-    if ($_FILES['file']['type'] !== 'text/csv') {
-      $msg = "csv以外のファイルがアップされました。<br>";
-      header('Location: ./upload.php?msg='.$msg);
-      exit();
-    }
+    // if ($_FILES['file']['type'] !== 'text/csv') {
+    //   $msg = "csv以外のファイルがアップされました。<br>";
+    //   header('Location: ./upload.php?msg='.$msg);
+    //   exit();
+    // }
 
     // 画像のリンクを生成
     $a = './data/'. basename($_FILES['file']['name']);

@@ -1,4 +1,4 @@
-4,index,Tournament,OpponentPlayer,Set,TotalGame,Server,WinLose,FirstSecond,Cource,Speed,AceDbF,ScoreServer,ScoreReturner,Side,WonA,WonB
+2,index,Tournament,OpponentPlayer,Set,TotalGame,Server,WinLose,FirstSecond,Cource,Speed,AceDbF,ScoreServer,ScoreReturner,Side,WonA,WonB
 164,0,201902ロッテルダム,スタン・ワウリンカ,1.0,1,酢,×,1,c,203,,0,0,Deuce,0,1
 165,1,201902ロッテルダム,スタン・ワウリンカ,1.0,1,酢,×,1,c,188,Ac,0,15,Ad,0,1
 166,2,201902ロッテルダム,スタン・ワウリンカ,1.0,1,酢,×,1,c,,,0,30,Deuce,0,1
@@ -70,6 +70,7 @@
 232,25,201902ロッテルダム,スタン・ワウリンカ,2.0,2,圭,○,1,w,,,30,40,Ad,1,0
 233,26,201902ロッテルダム,スタン・ワウリンカ,2.0,2,圭,×,2,w,,,40,40,Deuce,0,1
 234,27,201902ロッテルダム,スタン・ワウリンカ,2.0,2,圭,○,1,w,,,40,Ad,Ad,1,0
+234,27,201902ロッテルダム,スタン・ワウリンカ,2.0,2,圭,○,1,w,,,Ad,40,Ad,1,0
 235,48,201902ロッテルダム,スタン・ワウリンカ,2.0,3,酢,○,1,c,199,,0,0,Deuce,1,0
 236,49,201902ロッテルダム,スタン・ワウリンカ,2.0,3,酢,○,1,w,,,15,0,Ad,1,0
 237,50,201902ロッテルダム,スタン・ワウリンカ,2.0,3,酢,○,2,b,158,,30,0,Deuce,1,0
