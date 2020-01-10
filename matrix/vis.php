@@ -16,12 +16,11 @@ $game_title = explode(".", $game_title[count($game_title)-1]);
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" type="text/css" href="Chartcss.css">
 <title> <?php echo $game_title[0]; ?> </title>
 </head>
 <body>
   <h2><?php echo $game_title[0]; ?></h2>
-
+  <p><?php echo '<a target="_blank" href="./view_csv.php?link='.$_GET['file_name'].'">csvデータを見る</a><br>'."\n"; ?></p>
 <div id="container" style="height:50%; width:50%"></div>
 <script type="text/javascript">
 var cvs = document.createElement("canvas");
@@ -120,7 +119,7 @@ function contents(side,course,speed,player){
 
   // ラリーの情報を描画する関数
   me.draw = function(ctx){
-
+    
     var hue = me.course2hue();  // 落ちた場所の情報を色相に変換
     var value = 200;            // 明度、固定
     var saturation = 200;       // 彩度、固定
@@ -199,6 +198,8 @@ req.onload = function(){
       }
     }
 
+    console.log(sets);
+
     // data配列をデータごとの配列に入れなおす
     for(var i =1; i<data.length; i++){
         WinLose[i] = data[i][7];
@@ -209,8 +210,13 @@ req.onload = function(){
         speed[i] = data[i][10];
         side[i] = data[i][14];
         player[i] = data[i][6];
-        ScoreServer[i] = data[i][12];
-        ScoreReturner[i] = data[i][13];
+        if(player[i] == '圭'){
+         ScoreServer[i] = data[i][12];
+         ScoreReturner[i] = data[i][13];
+       } else {
+         ScoreServer[i] = data[i][13];
+         ScoreReturner[i] = data[i][12];
+       }
 
         // console.log(ScoreServer[i]);
 
@@ -221,13 +227,13 @@ req.onload = function(){
           //     points[n][m] = 0;
           //   }
           // }
-          if(ScoreServer[i-1]=="ad"){
+          if(ScoreServer[i-1]=="Ad"){
             if(player[i-1]=="圭"){
               games_x++;
             }else{
               games_y++;
             }
-          }else if(ScoreReturner[i-1]=="ad"){
+          }else if(ScoreReturner[i-1]=="Ad"){
             if(player[i-1]=="圭"){
               games_y++;
             }else{
