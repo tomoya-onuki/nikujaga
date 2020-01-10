@@ -7,6 +7,7 @@
   </head>
   <body>
     <h2><?php echo $_GET['link']; ?></h2>
+    <p><a href="<?php echo $_GET['link']; ?>"> csvファイルをダウンロード</a></p>
     <table border="1" style="font-size:90%">
     <?php
     // ファイルポインタをオープン
