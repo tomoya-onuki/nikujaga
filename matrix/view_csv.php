@@ -7,15 +7,23 @@
   </head>
   <body>
     <h2><?php echo $_GET['link']; ?></h2>
+    <table border="1" style="font-size:90%">
     <?php
     // ファイルポインタをオープン
     $handle = fopen($_GET['link'], "r");
     // ファイル内容を出力
     while ($line = fgets($handle)) {
-      echo nl2br($line);
+      $row = explode(",", $line);
+      echo '<tr align="center">';
+      for ($i=0; $i < count($row); $i++) {
+        echo "<td>".$row[$i]."</td>";
+      }
+      echo "</tr>";
+      // echo nl2br($line);
     }
     // ファイルポインタをクローズ
     fclose($handle);
     ?>
+    </table>
   </body>
 </html>
