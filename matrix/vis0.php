@@ -20,12 +20,27 @@ $game_title = explode(".", $game_title[count($game_title)-1]);
 </head>
 <body>
   <h2><?php echo $game_title[0]; ?></h2>
-  <p><?php echo '<a target="_blank" href="./view_csv.php?link='.$_GET['file_name'].'">csvデータを見る</a><br>'."\n"; ?></p>
+  <p><button onclick="saveCanvas('canvas_id');">画像を保存する</button></p>
 <div id="container" style="height:50%; width:50%"></div>
 <script type="text/javascript">
+
+function saveCanvas(canvas_id)
+{
+	var canvas = document.getElementById(canvas_id);
+	var uri = canvas.toDataURL('image/png', 0.85);
+
+	//アンカータグを作成
+	var a = document.createElement('a');
+	a.href = uri;
+	a.download = '<?php echo $game_title[0]; ?>.png';
+	//クリックイベントを発生させる
+	a.click();
+}
+
 var cvs = document.createElement("canvas");
-cvs.width = 3000;
-cvs.height = 3000;
+cvs.id = 'canvas_id';
+cvs.width = 10000;
+cvs.height = 10000;
 document.getElementById("container").appendChild(cvs);
 var ctx = cvs.getContext("2d");
 
@@ -442,7 +457,7 @@ req.onload = function(){
 
     }
     // console.log(sets);
-
+    ctx.scale(5,5);
     // sets[0][0][0][0][0][0].draw(ctx);
     for(var a=0; a<set_max; a++){
       for(var b=0; b<set_max; b++){
