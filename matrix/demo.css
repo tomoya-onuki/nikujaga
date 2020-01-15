@@ -1,0 +1,33 @@
+/*本文のレイアウト指定*/
+body{
+  margin-left: 10%;
+  margin-right: 10%;
+  margin-bottom: 50px;
+  color: #4f4f4f;
+  font-family: 'ヒラギノ角ゴ Pro W3';
+}
+
+ h1 {
+   font-size:300%;
+   font-family: 'Futura', 'Helvetica', 'Arial';
+   color: #000000;
+ }
+
+ a {
+   text-decoration: none;
+   color: #1e90ff;
+ }
+ a:hover {
+   background-color: #1e90ff;
+   color: #ffffff;
+ }
+img{
+  width:100%;
+}
+div {
+  margin-top:30px;
+}
+hr {
+  margin-top:50px;
+  margin-bottom:30px;
+}

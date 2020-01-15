@@ -20,12 +20,13 @@ $game_title = explode(".", $game_title[count($game_title)-1]);
 </head>
 <body>
   <h2><?php echo $game_title[0]; ?></h2>
+  <p id="game_title"> </p>
   <p><?php echo '<a target="_blank" href="./view_csv.php?link='.$_GET['file_name'].'">csvデータを見る</a><br>'."\n"; ?></p>
 <div id="container" style="height:50%; width:50%"></div>
 <script type="text/javascript">
 var cvs = document.createElement("canvas");
-cvs.width = 3000;
-cvs.height = 3000;
+cvs.width = 950;
+cvs.height = 950;
 document.getElementById("container").appendChild(cvs);
 var ctx = cvs.getContext("2d");
 
@@ -202,6 +203,9 @@ req.onload = function(){
 
     console.log(sets);
 
+    target = document.getElementById("game_title");
+    target.innerHTML = "vs "+data[1][3];
+
     // data配列をデータごとの配列に入れなおす
     for(var i =1; i<data.length; i++){
         WinLose[i] = data[i][7];
@@ -219,6 +223,8 @@ req.onload = function(){
          ScoreServer[i] = data[i][13];
          ScoreReturner[i] = data[i][12];
        }
+
+
 
         // console.log(ScoreServer[i]);
 
