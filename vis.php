@@ -25,12 +25,12 @@ $game_title = explode(".", $game_title[count($game_title) - 1]);
   <h2><?php echo $game_title[0]; ?></h2>
   <p id="match"> </p>
   <p>
-    <?php echo '<a target="_blank" href="./view_csv.php?link=' . $_GET['file_name'] . '">csvデータを見る</a>' . "\n"; ?> / <a href="./">TOPページへ</a>
+    <?php echo '<a target="_blank" href="./view_csv.php?link=' . $_GET['file_name'] . '">csvデータを見る</a>' . "\n"; ?> /  <a href="./">TOPページへ</a>
   </p>
-  <p>
+  <!-- <p>
     <div id="scale_slider_value">10</div>
     <input id="scale_slider" type="range" name="scale" step="1" min="1" max="10" value="10">
-  </p>
+  </p> -->
   <div id="container" style="height:50%; width:50%"></div>
   <script type="text/javascript">
     var cvs = document.createElement("canvas");
@@ -488,11 +488,7 @@ $game_title = explode(".", $game_title[count($game_title) - 1]);
       // console.log(sets);
 
       // sets[0][0][0][0][0][0].draw(ctx);
-      draw(scale, sets);
-    }
-
-    function draw(scale, sets) {
-      ctx.scale(scale, scale);
+      // ctx.scale(scale, scale);
       var point_size = 10;
       var point_margin = 2;
       cvs.width = ((point_size + point_margin) * 5.5 * 7 + 10) * set_max;
@@ -546,11 +542,11 @@ $game_title = explode(".", $game_title[count($game_title) - 1]);
     }
 
 
-    document.getElementById('scale_slider').addEventListener('input', function(e) {
-      var scale = e.value / 10;
-      document.getElementById('scale_slider_value').textContent = scale;
-      draw(scale);
-    });
+    // document.getElementById('scale_slider').addEventListener('input', function(e) {
+    //   var scale = e.value / 10;
+    //   document.getElementById('scale_slider_value').textContent = scale;
+    //   draw(scale);
+    // });
   </script>
   <!-- <div id="chartContainer" style="height:70%; width:70%">
   <canvas id="canvas2"> </canvas>
