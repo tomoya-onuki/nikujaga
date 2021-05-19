@@ -493,7 +493,7 @@ $game_title = explode(".", $game_title[count($game_title) - 1]);
       var canvas_h = ((point_size + point_margin) * 5.5 * 7 + 10) * set_max;
       var scale_x = window_w / canvas_w;
       var scale_y = window_h / canvas_h;
-      ctx.scale(scale_x, scale_h);
+      ctx.scale(scale_x, scale_y);
       var point_size = 10;
       var point_margin = 2;
       // cvs.width = ((point_size + point_margin) * 5.5 * 7 + 10) * set_max;
