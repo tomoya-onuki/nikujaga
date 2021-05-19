@@ -45,11 +45,9 @@ $game_title = explode(".", $game_title[count($game_title) - 1]);
 
 
     var cvs = document.createElement("canvas");
-
-    // Canvas のサイズをクライアントサイズに合わせる
+    cvs.id = 'canvas_id';
     cvs.width = 950;
     cvs.height = 950;
-
     document.getElementById("container").appendChild(cvs);
     var ctx = cvs.getContext("2d");
 
@@ -63,7 +61,6 @@ $game_title = explode(".", $game_title[count($game_title) - 1]);
     var player = [];
     var ScoreServer = [];
     var ScoreReturner = [];
-    var scale = 1;
 
 
     // sets.fill(0);
