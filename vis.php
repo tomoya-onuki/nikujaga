@@ -168,7 +168,7 @@ $game_title = explode(".", $game_title[count($game_title) - 1]);
       me.draw = function(ctx) {
 
         var hue = me.course2hue(); // 落ちた場所の情報を色相に変換
-        var value = 100; // 明度、固定
+        var value = 200; // 明度、固定
         var saturation = 80; // 彩度、固定
         // var value = 200; // 明度、固定
         // var saturation = 200; // 彩度、固定
