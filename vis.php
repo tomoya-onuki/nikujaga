@@ -488,10 +488,10 @@ $game_title = explode(".", $game_title[count($game_title) - 1]);
       // console.log(sets);
 
       // sets[0][0][0][0][0][0].draw(ctx);
-      draw(scale);
+      draw(scale, sets);
     }
 
-    function draw(scale) {
+    function draw(scale, sets) {
       ctx.scale(scale, scale);
       var point_size = 10;
       var point_margin = 2;
