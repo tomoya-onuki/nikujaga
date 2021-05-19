@@ -25,7 +25,7 @@
       $game_title = explode("/", $file_names[$i]);
       $game_title = explode(".", $game_title[count($game_title) - 1]);
       // echo '<div>'."\n";
-      echo '<a target="_blank" href="./vis.php?file_name=' . $file_names[$i] . '">' . $game_title[0] . '</a>' . "\n";
+      echo '<a href="./vis.php?file_name=' . $file_names[$i] . '">' . $game_title[0] . '</a>' . "\n";
       echo "<br>\n";
     }
     ?>
@@ -35,7 +35,6 @@
     <img src="./readme.png">
   </div>
   <div>
-    <h2>管理</h2>
     <a href="./admin.php">管理ページ</a>
   </div>
   <hr>

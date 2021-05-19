@@ -456,20 +456,25 @@ req.onload = function(){
     // console.log(sets);
 
     // sets[0][0][0][0][0][0].draw(ctx);
+    var point_size = 10;
+    var point_margin = 2;
+    cvs.width = ((rect_size+rect_margin) * 5.5 * 7 + 10) * set_max;
+    cvs.height = ((rect_size+rect_margin) * 5.5 * 7 + 10) * set_max;
+
     for(var a=0; a<set_max; a++){
       for(var b=0; b<set_max; b++){
         ctx.save();
-        ctx.translate((12*5.5*7+10)*a, (12*5.5*7+10)*b);
+        ctx.translate(((point_size+point_margin)*5.5*7+10)*a, ((point_size+point_margin)*5.5*7+10)*b);
         for(var c=0; c<game_max; c++){
           for(var d=0; d<game_max; d++){
             ctx.save();
-            ctx.translate((12*5.5)*c, (12*5.5)*d);
+            ctx.translate(((point_size+point_margin)*5.5)*c, ((point_size+point_margin)*5.5)*d);
 
             // 1game
             for(var i=0; i<point_max; i++){
               for(var j=0; j<point_max; j++){
                 ctx.save();
-                ctx.translate(12*i, 12*j);
+                ctx.translate((point_size+point_margin)*i, (point_size+point_margin)*j);
 
 
                 // 背景色の指定
@@ -483,7 +488,7 @@ req.onload = function(){
                   ctx.fillStyle = '#efefef';
                 }
                 // 背景の描画
-                ctx.fillRect(0, 0, 10, 10);
+                ctx.fillRect(0, 0, point_size, point_size);
 
                 // サーブの情報の描画
                 if(sets[a][b][c][d][i][j] != 0){
