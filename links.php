@@ -15,7 +15,7 @@
     echo "<tr>\n";
     echo '<td><a target="_blank" href="./vis.php?file_name='.$file_names[$i].'">'.$game_title[0].'</a></td>'."\n";
     echo '<td><a target="_blank" href="./view_csv.php?link='.$file_names[$i].'">[csvデータを見る]</a></td>'."\n";
-    echo '<td><a target="_blank" href="./vis0.php?file_name='.$file_names[$i].'">高解像度で見る </a></td>'."\n";
+    echo '<td><a target="_blank" href="./vis_big_img.php?file_name='.$file_names[$i].'">高解像度で見る </a></td>'."\n";
     echo "</tr>\n";
   }
   ?>
