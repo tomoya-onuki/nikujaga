@@ -497,8 +497,13 @@ $game_title = explode(".", $game_title[count($game_title) - 1]);
       // ctx.scale(scale, scale);
       var point_size = 10;
       var point_margin = 2;
-      cvs.width = ((point_size + point_margin) * 5.5 * 7 + 10) * set_max;
-      cvs.height = ((point_size + point_margin) * 5.5 * 7 + 10) * set_max;
+      var w = ((point_size + point_margin) * 5.5 * 7 + 10) * set_max;
+      var h = ((point_size + point_margin) * 5.5 * 7 + 10) * set_max;
+      cvs.width = w;
+      cvs.height = h;
+
+      ctx.fillStyle = 'rgb(255,255,255)';
+      ctx.fillRect(0, 0, w, h);
 
       for (var a = 0; a < set_max; a++) {
         for (var b = 0; b < set_max; b++) {
