@@ -25,14 +25,25 @@ $game_title = explode(".", $game_title[count($game_title) - 1]);
   <h2><?php echo $game_title[0]; ?></h2>
   <p id="match"> </p>
   <p>
-    <?php echo '<a target="_blank" href="./view_csv.php?link=' . $_GET['file_name'] . '">csvデータを見る</a>' . "\n"; ?> /  <a href="./">TOPページへ</a>
+    <?php echo '<a target="_blank" href="./view_csv.php?link=' . $_GET['file_name'] . '">csvデータを見る</a>' . "\n"; ?> / <a href="./">TOPページへ</a>
+    <button onclick="saveCanvas('canvas_id');">画像を保存する</button>
   </p>
-  <!-- <p>
-    <div id="scale_slider_value">10</div>
-    <input id="scale_slider" type="range" name="scale" step="1" min="1" max="10" value="10">
-  </p> -->
   <div id="container" style="height:50%; width:50%"></div>
   <script type="text/javascript">
+    
+    function saveCanvas(canvas_id) {
+      var canvas = document.getElementById(canvas_id);
+      var uri = canvas.toDataURL('image/png', 0.85);
+
+      //アンカータグを作成
+      var a = document.createElement('a');
+      a.href = uri;
+      a.download = '<?php echo $game_title[0]; ?>.png';
+      //クリックイベントを発生させる
+      a.click();
+    }
+
+
     var cvs = document.createElement("canvas");
 
     // Canvas のサイズをクライアントサイズに合わせる
@@ -52,7 +63,7 @@ $game_title = explode(".", $game_title[count($game_title) - 1]);
     var player = [];
     var ScoreServer = [];
     var ScoreReturner = [];
-    var scale = 10;
+    var scale = 1;
 
 
     // sets.fill(0);
@@ -487,19 +498,10 @@ $game_title = explode(".", $game_title[count($game_title) - 1]);
 
       // sets[0][0][0][0][0][0].draw(ctx);
       // ctx.scale(scale, scale);
-      var window_w = document.documentElement.clientWidth - 10;
-      var window_h = document.documentElement.clientHeight - 10;
-      var canvas_w = ((point_size + point_margin) * 5.5 * 7 + 10) * set_max;
-      var canvas_h = ((point_size + point_margin) * 5.5 * 7 + 10) * set_max;
-      var scale_x = window_w / canvas_w;
-      var scale_y = window_h / canvas_h;
-      ctx.scale(scale_x, scale_y);
       var point_size = 10;
       var point_margin = 2;
-      // cvs.width = ((point_size + point_margin) * 5.5 * 7 + 10) * set_max;
-      // cvs.height = ((point_size + point_margin) * 5.5 * 7 + 10) * set_max;
-      cvs.width = window_w;
-      cvs.height = window_h;
+      cvs.width = ((point_size + point_margin) * 5.5 * 7 + 10) * set_max;
+      cvs.height = ((point_size + point_margin) * 5.5 * 7 + 10) * set_max;
 
       for (var a = 0; a < set_max; a++) {
         for (var b = 0; b < set_max; b++) {
@@ -547,13 +549,6 @@ $game_title = explode(".", $game_title[count($game_title) - 1]);
         }
       }
     }
-
-
-    // document.getElementById('scale_slider').addEventListener('input', function(e) {
-    //   var scale = e.value / 10;
-    //   document.getElementById('scale_slider_value').textContent = scale;
-    //   draw(scale);
-    // });
   </script>
   <!-- <div id="chartContainer" style="height:70%; width:70%">
   <canvas id="canvas2"> </canvas>
