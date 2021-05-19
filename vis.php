@@ -16,6 +16,7 @@ $game_title = explode(".", $game_title[count($game_title)-1]);
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="demo.css">
 <title> <?php echo $game_title[0]; ?> </title>
 </head>
 <body>
@@ -25,8 +26,13 @@ $game_title = explode(".", $game_title[count($game_title)-1]);
 <div id="container" style="height:50%; width:50%"></div>
 <script type="text/javascript">
 var cvs = document.createElement("canvas");
-cvs.width = 950;
-cvs.height = 950;
+
+// Canvas のサイズをクライアントサイズに合わせる
+cvs.width = document.documentElement.clientWidth - 10;
+cvs.height = document.documentElement.clientHeight - 10;
+// cvs.width = 950;
+// cvs.height = 950;
+
 document.getElementById("container").appendChild(cvs);
 var ctx = cvs.getContext("2d");
 
