@@ -36,7 +36,7 @@
   </div>
 
   <hr>
-  <center>©️2020 nikujaga.</center>
+  <center>(c)2020-2021 nikujaga.</center>
 </body>
 
 </html>
