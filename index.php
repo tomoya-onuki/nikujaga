@@ -34,9 +34,7 @@
     <h2>読み方</h2>
     <img src="./readme.png">
   </div>
-  <div>
-    <a href="./admin.php">管理ページ</a>
-  </div>
+
   <hr>
   <center>©️2020 nikujaga.</center>
 </body>
