@@ -23,6 +23,7 @@ $game_title = explode(".", $game_title[count($game_title)-1]);
   <h2><?php echo $game_title[0]; ?></h2>
   <p id="game_title"> </p>
   <p><?php echo '<a target="_blank" href="./view_csv.php?link='.$_GET['file_name'].'">csvデータを見る</a><br>'."\n"; ?></p>
+  <p><a href="./">TOPページへ</a></p>
 <div id="container" style="height:50%; width:50%"></div>
 <script type="text/javascript">
 var cvs = document.createElement("canvas");
@@ -458,8 +459,8 @@ req.onload = function(){
     // sets[0][0][0][0][0][0].draw(ctx);
     var point_size = 10;
     var point_margin = 2;
-    cvs.width = ((rect_size+rect_margin) * 5.5 * 7 + 10) * set_max;
-    cvs.height = ((rect_size+rect_margin) * 5.5 * 7 + 10) * set_max;
+    cvs.width = ((point_size+point_margin) * 5.5 * 7 + 10) * set_max;
+    cvs.height = ((point_size+point_margin) * 5.5 * 7 + 10) * set_max;
 
     for(var a=0; a<set_max; a++){
       for(var b=0; b<set_max; b++){
