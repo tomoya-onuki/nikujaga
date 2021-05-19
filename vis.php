@@ -36,10 +36,8 @@ $game_title = explode(".", $game_title[count($game_title) - 1]);
     var cvs = document.createElement("canvas");
 
     // Canvas のサイズをクライアントサイズに合わせる
-    cvs.width = document.documentElement.clientWidth - 10;
-    cvs.height = document.documentElement.clientHeight - 10;
-    // cvs.width = 950;
-    // cvs.height = 950;
+    cvs.width = 950;
+    cvs.height = 950;
 
     document.getElementById("container").appendChild(cvs);
     var ctx = cvs.getContext("2d");
@@ -489,10 +487,19 @@ $game_title = explode(".", $game_title[count($game_title) - 1]);
 
       // sets[0][0][0][0][0][0].draw(ctx);
       // ctx.scale(scale, scale);
+      var window_w = document.documentElement.clientWidth - 10;
+      var window_h = document.documentElement.clientHeight - 10;
+      var canvas_w = ((point_size + point_margin) * 5.5 * 7 + 10) * set_max;
+      var canvas_h = ((point_size + point_margin) * 5.5 * 7 + 10) * set_max;
+      var scale_x = window_w / canvas_w;
+      var scale_y = window_h / canvas_h;
+      ctx.scale(scale_x, scale_h);
       var point_size = 10;
       var point_margin = 2;
-      cvs.width = ((point_size + point_margin) * 5.5 * 7 + 10) * set_max;
-      cvs.height = ((point_size + point_margin) * 5.5 * 7 + 10) * set_max;
+      // cvs.width = ((point_size + point_margin) * 5.5 * 7 + 10) * set_max;
+      // cvs.height = ((point_size + point_margin) * 5.5 * 7 + 10) * set_max;
+      cvs.width = window_w;
+      cvs.height = window_h;
 
       for (var a = 0; a < set_max; a++) {
         for (var b = 0; b < set_max; b++) {
