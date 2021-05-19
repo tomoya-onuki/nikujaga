@@ -140,9 +140,11 @@ $game_title = explode(".", $game_title[count($game_title) - 1]);
           case 'c':
             return 0; // 赤
           case 'b':
-            return 120; // 緑
+            return 80; // 緑
+            // return 120; // 緑
           case 'w':
-            return 240; // 青
+            return 220; // 青
+            // return 240; // 青
         }
       }
 
@@ -166,8 +168,10 @@ $game_title = explode(".", $game_title[count($game_title) - 1]);
       me.draw = function(ctx) {
 
         var hue = me.course2hue(); // 落ちた場所の情報を色相に変換
-        var value = 200; // 明度、固定
-        var saturation = 200; // 彩度、固定
+        var value = 100; // 明度、固定
+        var saturation = 80; // 彩度、固定
+        // var value = 200; // 明度、固定
+        // var saturation = 200; // 彩度、固定
         var color = me.hsv2rgb(hue, saturation, value);
 
         ctx.fillStyle = 'rgb(' + color[0] + ',' + color[1] + ',' + color[2] + ')'; // 色を指定
