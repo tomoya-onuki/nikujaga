@@ -253,7 +253,7 @@ $game_title = explode(".", $game_title[count($game_title) - 1]);
       console.log(sets);
 
       target = document.getElementById("match");
-      target.innerHTML = "vs " + data[1][3];
+      target.innerHTML = data[1][3];
 
       // data配列をデータごとの配列に入れなおす
       for (var i = 1; i < data.length; i++) {
