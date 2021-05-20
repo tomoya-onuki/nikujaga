@@ -24,7 +24,7 @@ $game_title = explode(".", $game_title[count($game_title) - 1]);
 <body>
   <h1><a href="./">Visual K</a></h1>
   <p>
-    <div>データ: <?php echo $game_title[0]; ?>  (<?php echo '<a target="_blank" style="color:#4f4f4f" href="./view_csv.php?link=' . $_GET['file_name'] . '">csv形式で見る</a>' . "\n"; ?> )</div>
+    <div>データ: <?php echo $game_title[0]; ?>  (<?php echo '<u><a target="_blank" style="color:#4f4f4f" href="./view_csv.php?link=' . $_GET['file_name'] . '">csv形式で見る</a></u>' . "\n"; ?> )</div>
     <div>対戦相手: <span id="match"> </span></div>
     <div><button onclick="saveCanvas('canvas_id');">画像を保存する</button></div>
   </p>
