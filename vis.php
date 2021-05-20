@@ -17,7 +17,7 @@ $game_title = explode(".", $game_title[count($game_title) - 1]);
 
 <head>
   <meta charset="UTF-8">
-  <link rel="stylesheet" type="text/css" href="demo.css">
+  <link rel="stylesheet" type="text/css" href="vis.css">
   <title> <?php echo $game_title[0]; ?> </title>
 </head>
 
